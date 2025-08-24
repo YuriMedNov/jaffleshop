@@ -1,0 +1,8 @@
+sources:
+  - name: jaffle_shop
+    database: FEA24_11
+    schema: jaffle_shop  
+    tables:
+      - name: customers
+      - name: orders
+      - name: payments
