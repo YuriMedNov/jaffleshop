@@ -5,11 +5,16 @@ with payment as
 )
 ,pivoted as 
 (   
-    Select order_id
-        , sum(case when payment_method = 'bank_transfer' then payment_amount else 0 end) as bank_transfer_amount
-        , sum(case when payment_method = 'coupon' then payment_amount else 0 end) as coupon_amount
-        , sum(case when payment_method = 'credit_card' then payment_amount else 0 end) as credit_card_amount
-        , sum(case when payment_method = 'gift_card' then payment_amount else 0 end) as gift_card_amount
+    Select order_id,
+        {%- set payment_methods = ['bank_transfer','coupon','credit_card','gift_card'] -%}
+
+        {%- for payment_method in payment_methods -%}
+
+        sum(case when payment_method = '{{payment_method}}' then payment_amount else 0 end) as {{payment_method}},  
+
+        {% endfor %}
+
+       
     from payment
     group by 1
 
